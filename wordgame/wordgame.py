@@ -38,7 +38,31 @@ class Profile(commands.Cog):
         await self.config.member(ctx.author).favorite_movie.set(favorite_movie.content)
         
         await ctx.send("Profiliniz başarıyla oluşturuldu!")
-    
+
+    @profil.command(name="soru-ekle")
+    async def _soru_ekle(self, ctx):
+     await ctx.author.send("Lütfen eklemek istediğiniz soruyu yazın.")
+     question = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
+     await self.config.questions.set_raw(str(len(await self.config.questions())), value=question.content)
+     await ctx.send("Soru başarıyla eklendi!")
+
+    @profil.command(name="değiştir")
+    async def _değiştir(self, ctx, field: str):
+     fields = {
+        "yaş": "age",
+        "okul": "school",
+        "hobiler": "hobbies",
+        "en sevdiğiniz tv programı": "favorite_tv_show",
+        "en sevdiğiniz film": "favorite_movie"
+     }
+     field = fields.get(field.lower())
+     if not field:
+        return await ctx.send("Geçersiz alan adı!")
+     await ctx.author.send(f"Lütfen yeni {field} değerini girin.")
+     value = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
+     await self.config.member(ctx.author).set_raw(field, value=value.content)
+     await ctx.send(f"{field} değeri başarıyla güncellendi!")
+
     @profil.command(name="göster")
     async def _göster(self, ctx, member: discord.Member):
         age = await self.config.member(member).age()
