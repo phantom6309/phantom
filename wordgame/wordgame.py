@@ -39,11 +39,12 @@ class Profile(commands.Cog):
         
         await ctx.send("Profiliniz başarıyla oluşturuldu!")
 
+    
     @profil.command(name="soru-ekle")
     async def _soru_ekle(self, ctx):
      await ctx.author.send("Lütfen eklemek istediğiniz soruyu yazın.")
      question = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
-     await self.config.questions.set_raw(str(len(await self.config.questions())), value=question.content)
+     await self.config.set_raw("questions", str(len(await self.config.questions())), value=question.content)
      await ctx.send("Soru başarıyla eklendi!")
 
     @profil.command(name="değiştir")
