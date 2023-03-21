@@ -1,63 +1,72 @@
-# -*- coding: utf-8 -*-
-from redbot.core.commands import Cog
-from redbot.core.data_manager import bundled_data_path
-from redbot.core import Config, commands
 import discord
-from collections import defaultdict
-from random import randint
-import random
+from redbot.core import commands
+from redbot.core import Config
 
-class Wordgame(commands.Cog):
+class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(self, identifier=1234567890)
-        self.game_channel = None
-        self.current_word = ""
-        self.previous_user = None
-        self.winning_score = "400"
-        self.scores = defaultdict(int)
-        self.used_words = set()
-        self.word_list = self.load_word_list()
+        self.config = Config.get_conf(self, identifier=123456789)
 
-    def load_word_list(self):
-        word_list_path = bundled_data_path(self) / "wordlist.txt"
-        with open(word_list_path) as f:
-            return [line.strip() for line in f]
+        # Set up default values for the config
+        default_global = {
+            "profiles": {}
+        }
+        self.config.register_global(**default_global)
 
+    @commands.command(name="profil oluştur")
+    async def create_profile(self, ctx):
+        """Creates a profile for the user"""
+        author_id = str(ctx.author.id)
 
-    @commands.command()
-    async def wordgame_start(self, ctx):
-        self.current_word = random.choice(self.word_list)
-        self.used_words.clear()
-        await ctx.send(f"The game has started! The current word is: {self.current_word}")
-
-    @commands.command()
-    async def wordgame_channel(self, ctx, channel: discord.TextChannel):
-        self.game_channel = channel
-        await ctx.send(f"The game will be played in {channel.mention}")
-
-    @commands.command()
-    async def wordgame_score(self, ctx):
-        scores = "\n".join(f"{self.bot.get_user(user_id)}: {score}" for user_id, score in self.scores.items())
-        await ctx.send(f"Scores:\n{scores}")
-
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.channel != self.game_channel or message.author == self.bot.user:
+        # Check if the user already has a profile
+        if author_id in self.config.profiles:
+            await ctx.send("You already have a profile!")
             return
-        if message.content.startswith(self.current_word[-1]) and message.content in self.word_list and message.content not in self.used_words:
-            self.used_words.add(message.content)
-            self.scores[message.author.id] += len(message.content)
-            self.current_word = random.choice(self.word_list)
-            await message.channel.send(f"Correct! The new word is: {self.current_word}")
-        else:
-            self.scores[message.author.id] -= len(message.content)
-            await message.channel.send("Incorrect! Please try again.")
-    @commands.command()
-    async def wordgame_end(self, ctx):
-        self.game_channel = None
-        self.current_word = ""
-        self.scores.clear()
-        self.used_words.clear()
-        await ctx.send("The game has ended.")
 
+        # Ask the user questions
+        questions = [
+            "What is your age?",
+            "What school do you attend?",
+            "What are your hobbies?",
+            "What is your favorite TV show?",
+            "What is your favorite movie?"
+        ]
+
+        answers = []
+        for question in questions:
+            await ctx.send(question)
+            response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
+            answers.append(response.content)
+
+        # Save the profile to the config
+        profile_data = {
+            "age": answers[0],
+            "school": answers[1],
+            "hobbies": answers[2],
+            "favorite_tv_show": answers[3],
+            "favorite_movie": answers[4]
+        }
+        await self.config.profiles.set_raw(author_id, value=profile_data)
+        await ctx.send("Profile created!")
+
+    @commands.command(name="profil göster")
+    async def show_profile(self, ctx, member: discord.Member = None):
+        """Displays the specified user's profile"""
+        if not member:
+            member = ctx.author
+
+        profile_data = await self.config.profiles.get_raw(str(member.id))
+
+        if not profile_data:
+            await ctx.send(f"{member.display_name} does not have a profile.")
+            return
+
+        # Create the embed
+        embed = discord.Embed(title=f"{member.display_name}'s Profile")
+        embed.add_field(name="Age", value=profile_data["age"], inline=False)
+        embed.add_field(name="School", value=profile_data["school"], inline=False)
+        embed.add_field(name="Hobbies", value=profile_data["hobbies"], inline=False)
+        embed.add_field(name="Favorite TV Show", value=profile_data["favorite_tv_show"], inline=False)
+        embed.add_field(name="Favorite Movie", value=profile_data["favorite_movie"], inline=False)
+
+        await ctx.send(embed=embed)
