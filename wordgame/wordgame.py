@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import discord
-from discord.ext import commands
+from redbot.core import commands
 from redbot.core import Config
 
 class Profile(commands.Cog):
