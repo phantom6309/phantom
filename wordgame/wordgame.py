@@ -66,21 +66,21 @@ class Profile(commands.Cog):
 
     @profil.command(name="göster")
     async def _göster(self, ctx, member: discord.Member):
-     if member is None:
+        if member is None:
         # If no member is specified, use the author of the message as the member
-        member = ctx.author
-        age = await self.config.member(member).age()
-        school = await self.config.member(member).school()
-        hobbies = await self.config.member(member).hobbies()
-        favorite_tv_show = await self.config.member(member).favorite_tv_show()
-        favorite_movie = await self.config.member(member).favorite_movie()
+           member = ctx.author
+         age = await self.config.member(member).age()
+         school = await self.config.member(member).school()
+         hobbies = await self.config.member(member).hobbies()
+         favorite_tv_show = await self.config.member(member).favorite_tv_show()
+         favorite_movie = await self.config.member(member).favorite_movie()
         
-        embed = discord.Embed(title=f"{member.display_name}'s Profile", color=0x00ff00)
-        embed.set_thumbnail(url=member.avatar_url)
-        embed.add_field(name="Yaş", value=age or "Bilinmiyor")
-        embed.add_field(name="Okul", value=school or "Bilinmiyor")
-        embed.add_field(name="Hobiler", value=hobbies or "Bilinmiyor")
-        embed.add_field(name="En Sevdiğiniz TV Programı", value=favorite_tv_show or "Bilinmiyor")
-        embed.add_field(name="En Sevdiğiniz Film", value=favorite_movie or "Bilinmiyor")
-        embed.set_image(url=member.avatar_url_as(size=1024))
-        await ctx.send(embed=embed)
+         embed = discord.Embed(title=f"{member.display_name}'s Profile", color=0x00ff00)
+         embed.set_thumbnail(url=member.avatar_url)
+         embed.add_field(name="Yaş", value=age or "Bilinmiyor")
+         embed.add_field(name="Okul", value=school or "Bilinmiyor")
+         embed.add_field(name="Hobiler", value=hobbies or "Bilinmiyor")
+         embed.add_field(name="En Sevdiğiniz TV Programı", value=favorite_tv_show or "Bilinmiyor")
+         embed.add_field(name="En Sevdiğiniz Film", value=favorite_movie or "Bilinmiyor")
+         embed.set_image(url=member.avatar_url_as(size=1024))
+         await ctx.send(embed=embed)
