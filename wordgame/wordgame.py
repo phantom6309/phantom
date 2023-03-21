@@ -65,7 +65,7 @@ class Profile(commands.Cog):
      await ctx.send(f"{field} değeri başarıyla güncellendi!")
 
     @profil.command(name="göster")
-    async def _göster(self, ctx, member: discord.Member):
+    async def _göster(self, ctx, member: discord.Member= None):
          if member == None:
           member = ctx.author
          age = await self.config.member(member).age()
