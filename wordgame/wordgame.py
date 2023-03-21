@@ -7,7 +7,7 @@ from typing import Optional
 class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(self, identifier=123456789)
+        self.config = Config.get_conf(self, identifier=6547894321)
 
     @commands.command()
     async def profil(self, ctx, member: Optional[discord.Member] = None):
@@ -37,7 +37,7 @@ class Profile(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    async def create_profile(self, member):
+    async def create_profile(self, ctx, member):
         """Asks the user questions to create a profile."""
         questions = {"age": "What's your age?",
                      "school": "What school do you go to?",
