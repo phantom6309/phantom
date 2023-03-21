@@ -37,6 +37,7 @@ class Profile(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.command()
     async def create_profile(self, ctx, member):
         """Asks the user questions to create a profile."""
         questions = {"age": "What's your age?",
