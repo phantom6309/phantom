@@ -4,7 +4,7 @@ from datetime import datetime
 from redbot.core import commands, Config
 from typing import Optional
 
-class UserProfile(commands.Cog):
+class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=123456789)
