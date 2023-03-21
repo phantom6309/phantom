@@ -5,7 +5,7 @@ from redbot.core import Config, commands
 class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(self, identifier=1234567890)
+        self.config = Config.get_conf(self, identifier=6743567823)
 
     @commands.command()
     async def profil_oluştur(self, ctx):
