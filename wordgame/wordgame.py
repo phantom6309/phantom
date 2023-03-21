@@ -15,7 +15,7 @@ class Profile(commands.Cog):
         self.config.register_global(**default_global)
 
     @commands.command(name="profil oluştur")
-    async def create_profile(self, ctx):
+    async def create(self, ctx):
         """Creates a profile for the user"""
         author_id = str(ctx.author.id)
 
@@ -51,7 +51,7 @@ class Profile(commands.Cog):
         await ctx.send("Profile created!")
 
     @commands.command(name="profil göster")
-    async def show_profile(self, ctx, member: discord.Member = None):
+    async def showprofile(self, ctx, member: discord.Member = None):
         """Displays the specified user's profile"""
         if not member:
             member = ctx.author
