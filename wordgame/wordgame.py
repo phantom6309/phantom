@@ -8,9 +8,14 @@ class Profile(commands.Cog):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=7895645342)
         self.config.register_member(age=None, school=None, hobbies=None, favorite_tv_show=None, favorite_movie=None)
-    
-    @commands.command()
-    async def profil_oluştur(self, ctx):
+
+    @commands.group()
+    async def profil(self, ctx: commands.Context) -> None:
+        """Profilinizi oluşturun veya başka birinin profilini görüntüleyin """
+        pass
+
+    @profil.command()
+    async def _oluştur(self, ctx):
         await ctx.author.send("Merhaba, profilinizi oluşturmak için birkaç soru sormak istiyoruz. Lütfen yaşınızı söyler misiniz?")
         age = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
         
@@ -34,8 +39,8 @@ class Profile(commands.Cog):
         
         await ctx.send("Profiliniz başarıyla oluşturuldu!")
     
-    @commands.command()
-    async def profil_göster(self, ctx, member: discord.Member):
+    @profil.command()
+    async def _göster(self, ctx, member: discord.Member):
         age = await self.config.member(member).age()
         school = await self.config.member(member).school()
         hobbies = await self.config.member(member).hobbies()
