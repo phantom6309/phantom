@@ -68,7 +68,7 @@ class Profile(commands.Cog):
     async def _göster(self, ctx, member: discord.Member):
      if member is None:
         # If no member is specified, use the author of the message as the member
-       member = ctx.author
+        member = ctx.author
         age = await self.config.member(member).age()
         school = await self.config.member(member).school()
         hobbies = await self.config.member(member).hobbies()
