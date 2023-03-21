@@ -66,7 +66,8 @@ class Profile(commands.Cog):
 
     @profil.command(name="göster")
     async def _göster(self, ctx, member: discord.Member):
-         member = member or ctx.author
+         if member == None:
+          member = ctx.author
          age = await self.config.member(member).age()
          school = await self.config.member(member).school()
          hobbies = await self.config.member(member).hobbies()
