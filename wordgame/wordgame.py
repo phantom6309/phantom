@@ -14,7 +14,7 @@ class Profile(commands.Cog):
         """Profilinizi oluşturun veya başka birinin profilini görüntüleyin """
         pass
 
-    @profil.command()
+    @profil.command(name="oluştur")
     async def _oluştur(self, ctx):
         await ctx.author.send("Merhaba, profilinizi oluşturmak için birkaç soru sormak istiyoruz. Lütfen yaşınızı söyler misiniz?")
         age = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
@@ -39,7 +39,7 @@ class Profile(commands.Cog):
         
         await ctx.send("Profiliniz başarıyla oluşturuldu!")
     
-    @profil.command()
+    @profil.command(name="göster")
     async def _göster(self, ctx, member: discord.Member):
         age = await self.config.member(member).age()
         school = await self.config.member(member).school()
