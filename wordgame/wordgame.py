@@ -36,6 +36,7 @@ class Profile(commands.Cog):
         await self.config.member(ctx.author).hobbies.set(hobbies.content)
         await self.config.member(ctx.author).favorite_tv_show.set(favorite_tv_show.content)
         await self.config.member(ctx.author).favorite_movie.set(favorite_movie.content)
+        await self.config.member(ctx.author).cinsiyet.set(cinsiyet.content)
         
         await ctx.send("Profiliniz başarıyla oluşturuldu!")
 
