@@ -50,7 +50,7 @@ class Profile(commands.Cog):
         "hobiler": "hobbies",
         "en sevdiğiniz tv programı": "favorite_tv_show",
         "en sevdiğiniz film": "favorite_movie"
-        "Cinsiyetiniz ":"cinsiyet"
+        "Cinsiyetiniz ": "cinsiyet"
      }
      field = fields.get(field.lower())
      if not field:
