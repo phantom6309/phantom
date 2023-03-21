@@ -7,7 +7,7 @@ class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=7895645342)
-        self.config.register_member(age=None, school=None, hobbies=None, favorite_tv_show=None, favorite_movie=None)
+        self.config.register_member(age=None, school=None, hobbies=None, favorite_tv_show=None, favorite_movie=None, cinsiyet=None)
 
     @commands.group()
     async def profil(self, ctx: commands.Context) -> None:
@@ -40,12 +40,7 @@ class Profile(commands.Cog):
         await ctx.send("Profiliniz başarıyla oluşturuldu!")
 
     
-    @profil.command(name="soru-ekle")
-    async def _soru_ekle(self, ctx):
-     await ctx.author.send("Lütfen eklemek istediğiniz soruyu yazın.")
-     question = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
-     await self.config.set_raw("questions", str(len(await self.config.questions())), value=question.content)
-     await ctx.send("Soru başarıyla eklendi!")
+    
 
     @profil.command(name="değiştir")
     async def _değiştir(self, ctx, field: str):
@@ -55,6 +50,7 @@ class Profile(commands.Cog):
         "hobiler": "hobbies",
         "en sevdiğiniz tv programı": "favorite_tv_show",
         "en sevdiğiniz film": "favorite_movie"
+        "Cinsiyetiniz ":"cinsiyet"
      }
      field = fields.get(field.lower())
      if not field:
@@ -71,7 +67,7 @@ class Profile(commands.Cog):
         hobbies = await self.config.member(member).hobbies()
         favorite_tv_show = await self.config.member(member).favorite_tv_show()
         favorite_movie = await self.config.member(member).favorite_movie()
-        
+        cinsiyet = await self.config.member(member).cinsiyet()
         embed = discord.Embed(title=f"{member.display_name}'s Profile", color=0x00ff00)
         embed.set_thumbnail(url=member.avatar_url)
         embed.add_field(name="Yaş", value=age or "Bilinmiyor")
@@ -79,5 +75,6 @@ class Profile(commands.Cog):
         embed.add_field(name="Hobiler", value=hobbies or "Bilinmiyor")
         embed.add_field(name="En Sevdiğiniz TV Programı", value=favorite_tv_show or "Bilinmiyor")
         embed.add_field(name="En Sevdiğiniz Film", value=favorite_movie or "Bilinmiyor")
+        embed.add_fiels(name="Cinsiyet", value=cinsiyet or "Bilinmiyor")
         embed.set_image(url=member.avatar_url_as(size=1024))
         await ctx.send(embed=embed)
