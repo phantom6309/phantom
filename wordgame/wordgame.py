@@ -79,5 +79,5 @@ class Profile(commands.Cog):
         embed.add_field(name="Hobiler", value=hobbies or "Bilinmiyor")
         embed.add_field(name="En Sevdiğiniz TV Programı", value=favorite_tv_show or "Bilinmiyor")
         embed.add_field(name="En Sevdiğiniz Film", value=favorite_movie or "Bilinmiyor")
-        
+        embed.set_image(url=member.avatar_url_as(size=1024))
         await ctx.send(embed=embed)
